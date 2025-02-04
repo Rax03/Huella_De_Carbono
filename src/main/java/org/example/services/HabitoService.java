@@ -1,36 +1,26 @@
 package org.example.services;
 
-import jakarta.persistence.EntityManager;
-import org.example.dao.HabitoDAO;
 import org.example.entities.Habito;
+import org.example.repositorio.HabitoRepository;
 
 import java.util.List;
 
 public class HabitoService {
-    private HabitoDAO habitoDAO;
+    private HabitoRepository habitoRepository = new HabitoRepository();
 
-    public HabitoService(EntityManager em) {
-        this.habitoDAO = new HabitoDAO(em);
+    public List<Habito> getAllHabitos() {
+        return habitoRepository.getAllHabitos();
     }
 
-    public void createHabito(Habito habito) {
-        habitoDAO.create(habito);
+    public Habito getHabitoById(Long idUsuario, Long idActividad) {
+        return habitoRepository.getHabitoById(idUsuario, idActividad);
     }
 
-    public Habito findHabitoById(int id) {
-        return habitoDAO.findById(id);
+    public void saveHabito(Habito habito) {
+        habitoRepository.saveHabito(habito);
     }
 
-    public List<Habito> findAllHabitos() {
-        return habitoDAO.findAll();
-    }
-
-    public void updateHabito(Habito habito) {
-        habitoDAO.update(habito);
-    }
-
-    public void deleteHabito(Habito habito) {
-        habitoDAO.delete(habito);
+    public void deleteHabito(Long idUsuario, Long idActividad) {
+        habitoRepository.deleteHabito(idUsuario, idActividad);
     }
 }
-

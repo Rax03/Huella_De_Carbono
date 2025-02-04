@@ -1,30 +1,30 @@
 package org.example.entities;
 
 import jakarta.persistence.*;
-
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name = "actividad", schema = "huelladecarbono")
 public class Actividad {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_actividad", nullable = false)
     private Integer id;
 
     @Column(name = "nombre", length = 100)
     private String nombre;
 
+    @Column(name = "unidad", length = 10)
+    private String unidad;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_categoria")
-    private org.example.entities.Categoría idCategoria;
+    @JoinColumn(name = "id_categoria", nullable = false)
+    private Categoria categoria;
 
-    @OneToMany(mappedBy = "idActividad")
-    private Set<org.example.entities.Habito> habitos = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "actividad", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Huella> huellas;
 
-    @OneToMany(mappedBy = "idActividad")
-    private Set<org.example.entities.Huella> huellas = new LinkedHashSet<>();
-
+    // Getters y Setters
     public Integer getId() {
         return id;
     }
@@ -41,28 +41,27 @@ public class Actividad {
         this.nombre = nombre;
     }
 
-    public org.example.entities.Categoría getIdCategoria() {
-        return idCategoria;
+    public String getUnidad() {
+        return unidad;
     }
 
-    public void setIdCategoria(org.example.entities.Categoría idCategoria) {
-        this.idCategoria = idCategoria;
+    public void setUnidad(String unidad) {
+        this.unidad = unidad;
     }
 
-    public Set<org.example.entities.Habito> getHabitos() {
-        return habitos;
+    public Categoria getCategoria() {
+        return categoria;
     }
 
-    public void setHabitos(Set<org.example.entities.Habito> habitos) {
-        this.habitos = habitos;
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
     }
 
-    public Set<org.example.entities.Huella> getHuellas() {
+    public List<Huella> getHuellas() {
         return huellas;
     }
 
-    public void setHuellas(Set<org.example.entities.Huella> huellas) {
+    public void setHuellas(List<Huella> huellas) {
         this.huellas = huellas;
     }
-
 }

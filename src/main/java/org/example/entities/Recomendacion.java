@@ -6,12 +6,13 @@ import jakarta.persistence.*;
 @Table(name = "recomendacion", schema = "huelladecarbono")
 public class Recomendacion {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_recomendacion", nullable = false)
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_categoria")
-    private Categoría idCategoria;
+    @JoinColumn(name = "id_categoria", nullable = false)
+    private Categoria categoria;
 
     @Lob
     @Column(name = "descripcion")
@@ -20,6 +21,7 @@ public class Recomendacion {
     @Column(name = "impacto_estimado")
     private Float impactoEstimado;
 
+    // Getters y Setters
     public Integer getId() {
         return id;
     }
@@ -28,12 +30,12 @@ public class Recomendacion {
         this.id = id;
     }
 
-    public Categoría getIdCategoria() {
-        return idCategoria;
+    public Categoria getCategoria() {
+        return categoria;
     }
 
-    public void setIdCategoria(Categoría idCategoria) {
-        this.idCategoria = idCategoria;
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
     }
 
     public String getDescripcion() {
@@ -51,5 +53,4 @@ public class Recomendacion {
     public void setImpactoEstimado(Float impactoEstimado) {
         this.impactoEstimado = impactoEstimado;
     }
-
 }

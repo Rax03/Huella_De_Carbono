@@ -2,13 +2,13 @@ package org.example.entities;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
-import java.util.LinkedList;
 import java.util.List;
 
 @Entity
 @Table(name = "usuario", schema = "huelladecarbono")
 public class Usuario {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_usuario", nullable = false)
     private Integer id;
 
@@ -18,18 +18,19 @@ public class Usuario {
     @Column(name = "email", length = 100)
     private String email;
 
-    @Column(name = "`contraseña`", length = 100)
+    @Column(name = "contraseña", length = 100)
     private String contraseña;
 
     @Column(name = "fecha_registro")
     private LocalDate fechaRegistro;
 
-    @OneToMany(mappedBy = "idUsuario")
-    private List<Habito> habitos = new LinkedList<>();
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Habito> habitos;
 
-    @OneToMany(mappedBy = "idUsuario")
-    private List<Huella> huellas = new LinkedList<>();
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Huella> huellas;
 
+    // Getters y Setters
     public Integer getId() {
         return id;
     }
@@ -84,18 +85,5 @@ public class Usuario {
 
     public void setHuellas(List<Huella> huellas) {
         this.huellas = huellas;
-    }
-
-    @Override
-    public String toString() {
-        return "Usuario{" +
-                "id=" + id +
-                ", nombre='" + nombre + '\'' +
-                ", email='" + email + '\'' +
-                ", contraseña='" + contraseña + '\'' +
-                ", fechaRegistro=" + fechaRegistro +
-                ", habitos=" + habitos +
-                ", huellas=" + huellas +
-                '}';
     }
 }

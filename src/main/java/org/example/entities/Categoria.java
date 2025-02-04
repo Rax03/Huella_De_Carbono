@@ -1,14 +1,13 @@
 package org.example.entities;
 
 import jakarta.persistence.*;
-
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.List;
 
 @Entity
-@Table(name = "`categoría`", schema = "huelladecarbono")
-public class Categoría {
+@Table(name = "categoria", schema = "huelladecarbono")
+public class Categoria {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_categoria", nullable = false)
     private Integer id;
 
@@ -21,12 +20,13 @@ public class Categoría {
     @Column(name = "unidad", length = 10)
     private String unidad;
 
-    @OneToMany(mappedBy = "idCategoria")
-    private Set<Actividad> actividads = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Recomendacion> recomendaciones;
 
-    @OneToMany(mappedBy = "idCategoria")
-    private Set<org.example.entities.Recomendacion> recomendacions = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Actividad> actividades;
 
+    // Getters y Setters
     public Integer getId() {
         return id;
     }
@@ -59,20 +59,19 @@ public class Categoría {
         this.unidad = unidad;
     }
 
-    public Set<Actividad> getActividads() {
-        return actividads;
+    public List<Recomendacion> getRecomendaciones() {
+        return recomendaciones;
     }
 
-    public void setActividads(Set<Actividad> actividads) {
-        this.actividads = actividads;
+    public void setRecomendaciones(List<Recomendacion> recomendaciones) {
+        this.recomendaciones = recomendaciones;
     }
 
-    public Set<org.example.entities.Recomendacion> getRecomendacions() {
-        return recomendacions;
+    public List<Actividad> getActividades() {
+        return actividades;
     }
 
-    public void setRecomendacions(Set<org.example.entities.Recomendacion> recomendacions) {
-        this.recomendacions = recomendacions;
+    public void setActividades(List<Actividad> actividades) {
+        this.actividades = actividades;
     }
-
 }

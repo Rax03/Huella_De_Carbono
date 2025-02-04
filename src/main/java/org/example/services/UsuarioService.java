@@ -1,40 +1,34 @@
 package org.example.services;
 
-import jakarta.persistence.EntityManager;
-import org.example.dao.UsuarioDAO;
 import org.example.entities.Usuario;
-
-import java.util.List;
+import org.example.repositorio.UsuarioRepository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class UsuarioService {
-    private UsuarioDAO usuarioDAO;
+    private UsuarioRepository usuarioRepository;
+    private BCryptPasswordEncoder passwordEncoder;
 
-    public UsuarioService(EntityManager em) {
-        this.usuarioDAO = new UsuarioDAO(em);
+    public UsuarioService() {
+        this.usuarioRepository = new UsuarioRepository();
+        this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
-    public void createUsuario(Usuario usuario) {
-        usuarioDAO.create(usuario);
+    public void saveUsuario(Usuario usuario) {
+        // Cifrar la contraseña antes de guardarla
+        String encodedPassword = passwordEncoder.encode(usuario.getContraseña());
+        usuario.setContraseña(encodedPassword);
+        usuarioRepository.saveUsuario(usuario);
     }
 
-    public Usuario findUsuarioById(int id) {
-        return usuarioDAO.findById(id);
+    public Usuario getUsuarioById(Integer id) {
+        return usuarioRepository.getUsuarioById(id);
     }
 
-    public List<Usuario> findAllUsuarios() {
-        return usuarioDAO.findAll();
-    }
-
-    public void updateUsuario(Usuario usuario) {
-        usuarioDAO.update(usuario);
-    }
-
-    public void deleteUsuario(Usuario usuario) {
-        usuarioDAO.delete(usuario);
-    }
-
-    public Usuario findByEmailAndContraseña(String email, String contraseña) {
-        return usuarioDAO.findByEmailAndContraseña(email, contraseña);
+    public Usuario login(String email, String password) throws Exception {
+        Usuario usuario = usuarioRepository.getUsuarioByEmail(email);
+        if (usuario == null || !passwordEncoder.matches(password, usuario.getContraseña())) {
+            throw new Exception("Credenciales incorrectas");
+        }
+        return usuario;
     }
 }
-

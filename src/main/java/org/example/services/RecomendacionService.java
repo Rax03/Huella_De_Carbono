@@ -1,36 +1,22 @@
 package org.example.services;
 
-import jakarta.persistence.EntityManager;
-import org.example.dao.RecomendacionDAO;
 import org.example.entities.Recomendacion;
+import org.example.repositorio.RecomendacionRepository;
 
 import java.util.List;
 
 public class RecomendacionService {
-    private RecomendacionDAO recomendacionDAO;
+    private RecomendacionRepository recomendacionRepository;
 
-    public RecomendacionService(EntityManager em) {
-        this.recomendacionDAO = new RecomendacionDAO(em);
-    }
-
-    public void createRecomendacion(Recomendacion recomendacion) {
-        recomendacionDAO.create(recomendacion);
-    }
-
-    public Recomendacion findRecomendacionById(int id) {
-        return recomendacionDAO.findById(id);
+    public RecomendacionService() {
+        this.recomendacionRepository = new RecomendacionRepository();
     }
 
     public List<Recomendacion> findAllRecomendaciones() {
-        return recomendacionDAO.findAll();
+        return recomendacionRepository.getAllRecomendaciones();
+    }
+    public Recomendacion findRecomendacionById(int id) {
+        return recomendacionRepository.getRecomendacionById( Long.valueOf(id));
     }
 
-    public void updateRecomendacion(Recomendacion recomendacion) {
-        recomendacionDAO.update(recomendacion);
-    }
-
-    public void deleteRecomendacion(Recomendacion recomendacion) {
-        recomendacionDAO.delete(recomendacion);
-    }
 }
-

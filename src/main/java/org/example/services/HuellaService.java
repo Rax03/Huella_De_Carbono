@@ -1,36 +1,26 @@
 package org.example.services;
 
-import jakarta.persistence.EntityManager;
-import org.example.dao.HuellaDAO;
 import org.example.entities.Huella;
+import org.example.repositorio.HuellaRepository;
 
 import java.util.List;
 
 public class HuellaService {
-    private HuellaDAO huellaDAO;
+    private HuellaRepository huellaRepository;
 
-    public HuellaService(EntityManager em) {
-        this.huellaDAO = new HuellaDAO(em);
+    public HuellaService() {
+        this.huellaRepository = new HuellaRepository();
     }
 
-    public void createHuella(Huella huella) {
-        huellaDAO.create(huella);
+    public void saveHuella(Huella huella) {
+        huellaRepository.saveHuella(huella);
     }
 
-    public Huella findHuellaById(int id) {
-        return huellaDAO.findById(id);
+    public Huella getHuellaById(Integer id) {
+        return huellaRepository.getHuellaById(id);
     }
 
-    public List<Huella> findAllHuellas() {
-        return huellaDAO.findAll();
-    }
-
-    public void updateHuella(Huella huella) {
-        huellaDAO.update(huella);
-    }
-
-    public void deleteHuella(Huella huella) {
-        huellaDAO.delete(huella);
+    public List<Huella> getAllHuellas() {
+        return huellaRepository.getAllHuellas();
     }
 }
-

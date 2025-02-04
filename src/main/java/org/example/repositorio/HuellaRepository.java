@@ -1,30 +1,30 @@
 package org.example.repositorio;
 
-import org.example.entities.Usuario;
+import org.example.entities.Huella;
 import org.example.utils.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import java.util.List;
 
-public class UsuarioRepository {
-    public List<Usuario> getAllUsuarios() {
+public class HuellaRepository {
+    public List<Huella> getAllHuellas() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("from Usuario", Usuario.class).list();
+            return session.createQuery("from Huella", Huella.class).list();
         }
     }
 
-    public Usuario getUsuarioById(Integer id) {
+    public Huella getHuellaById(Integer id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.get(Usuario.class, id);
+            return session.get(Huella.class, id);
         }
     }
 
-    public void saveUsuario(Usuario usuario) {
+    public void saveHuella(Huella huella) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.saveOrUpdate(usuario);
+            session.saveOrUpdate(huella);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -34,13 +34,13 @@ public class UsuarioRepository {
         }
     }
 
-    public void deleteUsuario(Integer id) {
+    public void deleteHuella(Integer id) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            Usuario usuario = session.get(Usuario.class, id);
-            if (usuario != null) {
-                session.delete(usuario);
+            Huella huella = session.get(Huella.class, id);
+            if (huella != null) {
+                session.delete(huella);
                 transaction.commit();
             }
         } catch (Exception e) {
@@ -48,14 +48,6 @@ public class UsuarioRepository {
                 transaction.rollback();
             }
             e.printStackTrace(); // Imprimir el stack trace para ayudar con la depuración
-        }
-    }
-
-    public Usuario getUsuarioByEmail(String email) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("from Usuario where email = :email", Usuario.class)
-                    .setParameter("email", email)
-                    .uniqueResult();
         }
     }
 }

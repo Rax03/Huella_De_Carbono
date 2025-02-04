@@ -1,23 +1,23 @@
 package org.example.entities;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "huella", schema = "huelladecarbono")
 public class Huella {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_registro", nullable = false)
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_usuario")
-    private org.example.entities.Usuario idUsuario;
+    @JoinColumn(name = "id_usuario", nullable = false)
+    private Usuario usuario;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_actividad")
-    private Actividad idActividad;
+    @JoinColumn(name = "id_actividad", nullable = false)
+    private Actividad actividad;
 
     @Column(name = "valor")
     private Float valor;
@@ -28,6 +28,7 @@ public class Huella {
     @Column(name = "fecha")
     private LocalDate fecha;
 
+    // Getters y Setters
     public Integer getId() {
         return id;
     }
@@ -36,20 +37,20 @@ public class Huella {
         this.id = id;
     }
 
-    public org.example.entities.Usuario getIdUsuario() {
-        return idUsuario;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setIdUsuario(org.example.entities.Usuario idUsuario) {
-        this.idUsuario = idUsuario;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
-    public Actividad getIdActividad() {
-        return idActividad;
+    public Actividad getActividad() {
+        return actividad;
     }
 
-    public void setIdActividad(Actividad idActividad) {
-        this.idActividad = idActividad;
+    public void setActividad(Actividad actividad) {
+        this.actividad = actividad;
     }
 
     public Float getValor() {
@@ -75,5 +76,4 @@ public class Huella {
     public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
-
 }

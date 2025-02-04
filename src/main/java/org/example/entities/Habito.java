@@ -1,7 +1,6 @@
 package org.example.entities;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
 
 @Entity
@@ -13,12 +12,12 @@ public class Habito {
     @MapsId("idUsuario")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_usuario", nullable = false)
-    private org.example.entities.Usuario idUsuario;
+    private Usuario usuario;
 
     @MapsId("idActividad")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_actividad", nullable = false)
-    private Actividad idActividad;
+    private Actividad actividad;
 
     @Column(name = "frecuencia")
     private Integer frecuencia;
@@ -29,6 +28,7 @@ public class Habito {
     @Column(name = "ultima_fecha")
     private LocalDate ultimaFecha;
 
+    // Getters y Setters
     public HabitoId getId() {
         return id;
     }
@@ -37,20 +37,20 @@ public class Habito {
         this.id = id;
     }
 
-    public org.example.entities.Usuario getIdUsuario() {
-        return idUsuario;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setIdUsuario(org.example.entities.Usuario idUsuario) {
-        this.idUsuario = idUsuario;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
-    public Actividad getIdActividad() {
-        return idActividad;
+    public Actividad getActividad() {
+        return actividad;
     }
 
-    public void setIdActividad(Actividad idActividad) {
-        this.idActividad = idActividad;
+    public void setActividad(Actividad actividad) {
+        this.actividad = actividad;
     }
 
     public Integer getFrecuencia() {
@@ -76,5 +76,4 @@ public class Habito {
     public void setUltimaFecha(LocalDate ultimaFecha) {
         this.ultimaFecha = ultimaFecha;
     }
-
 }

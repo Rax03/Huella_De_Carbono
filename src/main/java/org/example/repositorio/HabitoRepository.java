@@ -1,61 +1,55 @@
 package org.example.repositorio;
 
-import org.example.entities.Usuario;
+import org.example.entities.Habito;
+import org.example.entities.HabitoId;
 import org.example.utils.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import java.util.List;
 
-public class UsuarioRepository {
-    public List<Usuario> getAllUsuarios() {
+public class HabitoRepository {
+
+    public List<Habito> getAllHabitos() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("from Usuario", Usuario.class).list();
+            return session.createQuery("from HabitoId", Habito.class).list();
         }
     }
 
-    public Usuario getUsuarioById(Integer id) {
+    public Habito getHabitoById(Long idUsuario, Long idActividad) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.get(Usuario.class, id);
+            return session.get(Habito.class, new HabitoId(idUsuario, idActividad));
         }
     }
 
-    public void saveUsuario(Usuario usuario) {
+    public void saveHabito(Habito habito) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.saveOrUpdate(usuario);
+            session.saveOrUpdate(habito);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
-            e.printStackTrace(); // Imprimir el stack trace para ayudar con la depuración
+            throw e; // Lanzar la excepción para que el método de llamada pueda manejarla
         }
     }
 
-    public void deleteUsuario(Integer id) {
+    public void deleteHabito(Long idUsuario, Long idActividad) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            Usuario usuario = session.get(Usuario.class, id);
-            if (usuario != null) {
-                session.delete(usuario);
+            Habito habito = session.get(Habito.class, new HabitoId(idUsuario, idActividad));
+            if (habito != null) {
+                session.delete(habito);
                 transaction.commit();
             }
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
-            e.printStackTrace(); // Imprimir el stack trace para ayudar con la depuración
-        }
-    }
-
-    public Usuario getUsuarioByEmail(String email) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("from Usuario where email = :email", Usuario.class)
-                    .setParameter("email", email)
-                    .uniqueResult();
+            throw e; // Lanzar la excepción para que el método de llamada pueda manejarla
         }
     }
 }

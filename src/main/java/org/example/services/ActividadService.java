@@ -1,36 +1,18 @@
 package org.example.services;
 
-import jakarta.persistence.EntityManager;
-import org.example.dao.ActividadDAO;
 import org.example.entities.Actividad;
+import org.example.repositorio.ActividadRepository;
 
 import java.util.List;
 
 public class ActividadService {
-    private ActividadDAO actividadDAO;
+    private ActividadRepository actividadRepository;
 
-    public ActividadService(EntityManager em) {
-        this.actividadDAO = new ActividadDAO(em);
+    public ActividadService() {
+        this.actividadRepository = new ActividadRepository();
     }
 
-    public void createActividad(Actividad actividad) {
-        actividadDAO.create(actividad);
-    }
-
-    public Actividad findActividadById(int id) {
-        return actividadDAO.findById(id);
-    }
-
-    public List<Actividad> findAllActividades() {
-        return actividadDAO.findAll();
-    }
-
-    public void updateActividad(Actividad actividad) {
-        actividadDAO.update(actividad);
-    }
-
-    public void deleteActividad(Actividad actividad) {
-        actividadDAO.delete(actividad);
+    public List<Actividad> getAllActividades() {
+        return actividadRepository.getAllActividades();
     }
 }
-
