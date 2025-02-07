@@ -1,10 +1,13 @@
 package org.example.entities;
 
-import jakarta.persistence.*;
-import java.time.LocalDate;
+import org.hibernate.annotations.ColumnDefault;
+
+import javax.persistence.*;
+import java.math.BigDecimal;
+import java.time.Instant;
 
 @Entity
-@Table(name = "huella", schema = "huelladecarbono")
+@Table(name = "huella")
 public class Huella {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -12,23 +15,23 @@ public class Huella {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_usuario", nullable = false)
-    private Usuario usuario;
+    @JoinColumn(name = "id_usuario")
+    private org.example.entities.Usuario idUsuario;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_actividad", nullable = false)
-    private Actividad actividad;
+    @JoinColumn(name = "id_actividad")
+    private Actividad idActividad;
 
-    @Column(name = "valor")
-    private Float valor;
+    @Column(name = "valor", nullable = false, precision = 10, scale = 2)
+    private BigDecimal valor;
 
-    @Column(name = "unidad", length = 10)
+    @Column(name = "unidad", nullable = false, length = 50)
     private String unidad;
 
+    @ColumnDefault("current_timestamp()")
     @Column(name = "fecha")
-    private LocalDate fecha;
+    private Instant fecha;
 
-    // Getters y Setters
     public Integer getId() {
         return id;
     }
@@ -37,27 +40,27 @@ public class Huella {
         this.id = id;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
+    public org.example.entities.Usuario getIdUsuario() {
+        return idUsuario;
     }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public void setIdUsuario(org.example.entities.Usuario idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
-    public Actividad getActividad() {
-        return actividad;
+    public Actividad getIdActividad() {
+        return idActividad;
     }
 
-    public void setActividad(Actividad actividad) {
-        this.actividad = actividad;
+    public void setIdActividad(Actividad idActividad) {
+        this.idActividad = idActividad;
     }
 
-    public Float getValor() {
+    public BigDecimal getValor() {
         return valor;
     }
 
-    public void setValor(Float valor) {
+    public void setValor(BigDecimal valor) {
         this.valor = valor;
     }
 
@@ -69,11 +72,22 @@ public class Huella {
         this.unidad = unidad;
     }
 
-    public LocalDate getFecha() {
+    public Instant getFecha() {
         return fecha;
     }
 
-    public void setFecha(LocalDate fecha) {
+    public void setFecha(Instant fecha) {
         this.fecha = fecha;
+    }
+
+    @Override
+    public String toString() {
+        return "Huella{" +
+                "id=" + id +
+                ", idActividad=" + idActividad.getNombre() +
+                ", valor=" + valor +
+                ", unidad='" + unidad + '\'' +
+                ", fecha=" + fecha +
+                '}';
     }
 }

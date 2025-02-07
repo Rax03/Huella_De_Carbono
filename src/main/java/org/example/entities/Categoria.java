@@ -1,32 +1,34 @@
 package org.example.entities;
 
-import jakarta.persistence.*;
-import java.util.List;
+
+import javax.persistence.*;
+import java.math.BigDecimal;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "categoria", schema = "huelladecarbono")
+@Table(name = "categoria")
 public class Categoria {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_categoria", nullable = false)
     private Integer id;
 
-    @Column(name = "nombre", length = 100)
+    @Column(name = "nombre", nullable = false)
     private String nombre;
 
-    @Column(name = "factor_emision")
-    private Float factorEmision;
+    @Column(name = "factor_emision", nullable = false, precision = 10, scale = 4)
+    private BigDecimal factorEmision;
 
-    @Column(name = "unidad", length = 10)
+    @Column(name = "unidad", nullable = false, length = 50)
     private String unidad;
 
-    @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Recomendacion> recomendaciones;
+    @OneToMany(mappedBy = "idCategoria")
+    private Set<Actividad> actividads = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Actividad> actividades;
+    @OneToMany(mappedBy = "idCategoria")
+    private Set<org.example.entities.Recomendacion> recomendacions = new LinkedHashSet<>();
 
-    // Getters y Setters
     public Integer getId() {
         return id;
     }
@@ -43,11 +45,11 @@ public class Categoria {
         this.nombre = nombre;
     }
 
-    public Float getFactorEmision() {
+    public BigDecimal getFactorEmision() {
         return factorEmision;
     }
 
-    public void setFactorEmision(Float factorEmision) {
+    public void setFactorEmision(BigDecimal factorEmision) {
         this.factorEmision = factorEmision;
     }
 
@@ -59,19 +61,31 @@ public class Categoria {
         this.unidad = unidad;
     }
 
-    public List<Recomendacion> getRecomendaciones() {
-        return recomendaciones;
+    public Set<Actividad> getActividads() {
+        return actividads;
     }
 
-    public void setRecomendaciones(List<Recomendacion> recomendaciones) {
-        this.recomendaciones = recomendaciones;
+    public void setActividads(Set<Actividad> actividads) {
+        this.actividads = actividads;
     }
 
-    public List<Actividad> getActividades() {
-        return actividades;
+    public Set<org.example.entities.Recomendacion> getRecomendacions() {
+        return recomendacions;
     }
 
-    public void setActividades(List<Actividad> actividades) {
-        this.actividades = actividades;
+    public void setRecomendacions(Set<org.example.entities.Recomendacion> recomendacions) {
+        this.recomendacions = recomendacions;
+    }
+
+    @Override
+    public String toString() {
+        return "Categoria{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", factorEmision=" + factorEmision +
+                ", unidad='" + unidad + '\'' +
+                ", actividads=" + actividads +
+                ", recomendacions=" + recomendacions +
+                '}';
     }
 }

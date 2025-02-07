@@ -1,9 +1,12 @@
 package org.example.entities;
 
-import jakarta.persistence.*;
+
+
+import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
-@Table(name = "recomendacion", schema = "huelladecarbono")
+@Table(name = "recomendacion")
 public class Recomendacion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -11,17 +14,16 @@ public class Recomendacion {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_categoria", nullable = false)
-    private Categoria categoria;
+    @JoinColumn(name = "id_categoria")
+    private Categoria idCategoria;
 
     @Lob
-    @Column(name = "descripcion")
+    @Column(name = "descripcion", nullable = false)
     private String descripcion;
 
-    @Column(name = "impacto_estimado")
-    private Float impactoEstimado;
+    @Column(name = "impacto_estimado", nullable = false, precision = 10, scale = 2)
+    private BigDecimal impactoEstimado;
 
-    // Getters y Setters
     public Integer getId() {
         return id;
     }
@@ -30,12 +32,12 @@ public class Recomendacion {
         this.id = id;
     }
 
-    public Categoria getCategoria() {
-        return categoria;
+    public Categoria getIdCategoria() {
+        return idCategoria;
     }
 
-    public void setCategoria(Categoria categoria) {
-        this.categoria = categoria;
+    public void setIdCategoria(Categoria idCategoria) {
+        this.idCategoria = idCategoria;
     }
 
     public String getDescripcion() {
@@ -46,11 +48,21 @@ public class Recomendacion {
         this.descripcion = descripcion;
     }
 
-    public Float getImpactoEstimado() {
+    public BigDecimal getImpactoEstimado() {
         return impactoEstimado;
     }
 
-    public void setImpactoEstimado(Float impactoEstimado) {
+    public void setImpactoEstimado(BigDecimal impactoEstimado) {
         this.impactoEstimado = impactoEstimado;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Recomendacion{" +
+                "id=" + id +
+                ", descripcion='" + descripcion + '\'' +
+                ", impactoEstimado=" + impactoEstimado +
+                "} \n";
     }
 }

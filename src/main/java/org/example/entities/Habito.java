@@ -1,10 +1,11 @@
 package org.example.entities;
 
-import jakarta.persistence.*;
-import java.time.LocalDate;
+
+import javax.persistence.*;
+import java.time.Instant;
 
 @Entity
-@Table(name = "habito", schema = "huelladecarbono")
+@Table(name = "habito")
 public class Habito {
     @EmbeddedId
     private HabitoId id;
@@ -12,23 +13,23 @@ public class Habito {
     @MapsId("idUsuario")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_usuario", nullable = false)
-    private Usuario usuario;
+    private org.example.entities.Usuario idUsuario;
 
     @MapsId("idActividad")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_actividad", nullable = false)
-    private Actividad actividad;
+    private Actividad idActividad;
 
-    @Column(name = "frecuencia")
+    @Column(name = "frecuencia", nullable = false)
     private Integer frecuencia;
 
-    @Column(name = "tipo", length = 20)
+    @Lob
+    @Column(name = "tipo", nullable = false)
     private String tipo;
 
     @Column(name = "ultima_fecha")
-    private LocalDate ultimaFecha;
+    private Instant ultimaFecha;
 
-    // Getters y Setters
     public HabitoId getId() {
         return id;
     }
@@ -37,20 +38,20 @@ public class Habito {
         this.id = id;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
+    public org.example.entities.Usuario getIdUsuario() {
+        return idUsuario;
     }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public void setIdUsuario(org.example.entities.Usuario idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
-    public Actividad getActividad() {
-        return actividad;
+    public Actividad getIdActividad() {
+        return idActividad;
     }
 
-    public void setActividad(Actividad actividad) {
-        this.actividad = actividad;
+    public void setIdActividad(Actividad idActividad) {
+        this.idActividad = idActividad;
     }
 
     public Integer getFrecuencia() {
@@ -69,11 +70,23 @@ public class Habito {
         this.tipo = tipo;
     }
 
-    public LocalDate getUltimaFecha() {
+    public Instant getUltimaFecha() {
         return ultimaFecha;
     }
 
-    public void setUltimaFecha(LocalDate ultimaFecha) {
+    public void setUltimaFecha(Instant ultimaFecha) {
         this.ultimaFecha = ultimaFecha;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Habito{" +
+                " idUsuario=" + idUsuario.getNombre() +
+                ", idActividad=" + idActividad.getId() + "-" +  idActividad.getNombre() +
+                ", frecuencia=" + frecuencia +
+                ", tipo='" + tipo + '\'' +
+                ", ultimaFecha=" + ultimaFecha +
+                '}';
     }
 }

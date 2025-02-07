@@ -1,23 +1,60 @@
 package org.example.dao;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.NoResultException;
+import org.example.conection.Connection;
 import org.example.entities.Usuario;
+import org.hibernate.Session;
+import org.hibernate.query.Query;
 
-public class UsuarioDAO extends GenericDAO<Usuario> {
-    public UsuarioDAO(EntityManager em) {
-        super(em, Usuario.class);
-    }
+public class UsuarioDAO {
 
-    public Usuario findByEmailAndContraseña(String email, String contraseña) {
-        try {
-            return em.createQuery("SELECT u FROM Usuario u WHERE u.email = :email AND u.contraseña = :contraseña", Usuario.class)
-                    .setParameter("email", email)
-                    .setParameter("contraseña", contraseña)
-                    .getSingleResult();
-        } catch (NoResultException e) {
-            return null; // Retornar null si no se encuentra el usuario
+    public static void InsertarUsuario(Usuario usuario) {
+        Usuario usuarioTMP = BuscarNombreUsuario(usuario.getNombre());
+
+        if (usuarioTMP != null) {
+            System.out.println("El Usuario ya existe");
+        } else {
+            Session session = Connection.getInstance().getSession();
+            session.beginTransaction();
+            session.persist(usuario);
+            session.getTransaction().commit();
+            System.out.println("Usuario creado exitosamente");
         }
     }
-}
 
+
+    public static Usuario BuscarNombreUsuario(String nombre) {
+        Session session = Connection.getInstance().getSession();
+        Query<Usuario> query = session.createQuery("from Usuario where nombre = :nombre", Usuario.class)
+                .setParameter("nombre", nombre);
+
+        return query.uniqueResult();
+    }
+
+    public static Usuario BuscarPorId(int id) {
+        Session session = Connection.getInstance().getSession();
+        Query<Usuario> query = session.createQuery("from Usuario where id = :id", Usuario.class)
+                .setParameter("id", id);
+
+        return query.uniqueResult();
+    }
+
+
+    public static void ActualizarUsuario(Usuario usuario) {
+        Session session = Connection.getInstance().getSession();
+        session.beginTransaction();
+        session.merge(usuario);
+        session.getTransaction().commit();
+        System.out.println("El usuario se actualizado exitosamente");
+    }
+
+
+    public static void EliminarUsuario(Usuario usuario) {
+        Session session = Connection.getInstance().getSession();
+        session.beginTransaction();
+        Usuario usuarioManaged = (Usuario) session.merge(usuario);
+        session.delete(usuarioManaged);
+        session.getTransaction().commit();
+        session.close(); // Cerramos la sesión
+        System.out.println("El usuario se a eliminado exitosamente");
+    }
+}

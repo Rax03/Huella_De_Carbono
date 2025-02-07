@@ -1,50 +1,56 @@
 package org.example.entities;
 
-import jakarta.persistence.*;
-import java.io.Serializable;
+
+import org.hibernate.Hibernate;
+
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import java.util.Objects;
 
 @Embeddable
-public class HabitoId implements Serializable {
-    private Long idUsuario;
-    private Long idActividad;
+public class HabitoId implements java.io.Serializable {
+    private static final long serialVersionUID = -2344439128532211307L;
+    @Column(name = "id_usuario", nullable = false)
+    private Integer idUsuario;
 
-    public HabitoId() {
-    }
+    @Column(name = "id_actividad", nullable = false)
+    private Integer idActividad;
 
-    public HabitoId(Long idUsuario, Long idActividad) {
-        this.idUsuario = idUsuario;
-        this.idActividad = idActividad;
-    }
-
-    // Getters, setters, equals, and hashCode methods
-    public Long getIdUsuario() {
+    public Integer getIdUsuario() {
         return idUsuario;
     }
 
-    public void setIdUsuario(Long idUsuario) {
+    public void setIdUsuario(Integer idUsuario) {
         this.idUsuario = idUsuario;
     }
 
-    public Long getIdActividad() {
+    public Integer getIdActividad() {
         return idActividad;
     }
 
-    public void setIdActividad(Long idActividad) {
+    public void setIdActividad(Integer idActividad) {
         this.idActividad = idActividad;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        HabitoId habitoId = (HabitoId) o;
-        return Objects.equals(idUsuario, habitoId.idUsuario) &&
-                Objects.equals(idActividad, habitoId.idActividad);
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        HabitoId entity = (HabitoId) o;
+        return Objects.equals(this.idActividad, entity.idActividad) &&
+                Objects.equals(this.idUsuario, entity.idUsuario);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idUsuario, idActividad);
+        return Objects.hash(idActividad, idUsuario);
+    }
+
+    @Override
+    public String toString() {
+        return "HabitoId{" +
+                "idUsuario=" + idUsuario +
+                ", idActividad=" + idActividad +
+                '}';
     }
 }

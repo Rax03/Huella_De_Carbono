@@ -1,30 +1,32 @@
 package org.example.entities;
 
-import jakarta.persistence.*;
-import java.util.List;
+
+
+import javax.persistence.*;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "actividad", schema = "huelladecarbono")
+@Table(name = "actividad")
 public class Actividad {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_actividad", nullable = false)
     private Integer id;
 
-    @Column(name = "nombre", length = 100)
+    @Column(name = "nombre", nullable = false)
     private String nombre;
 
-    @Column(name = "unidad", length = 10)
-    private String unidad;
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_categoria", nullable = false)
-    private Categoria categoria;
+    @JoinColumn(name = "id_categoria")
+    private org.example.entities.Categoria idCategoria;
 
-    @OneToMany(mappedBy = "actividad", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Huella> huellas;
+    @OneToMany(mappedBy = "idActividad")
+    private Set<org.example.entities.Habito> habitos = new LinkedHashSet<>();
 
-    // Getters y Setters
+    @OneToMany(mappedBy = "idActividad")
+    private Set<org.example.entities.Huella> huellas = new LinkedHashSet<>();
+
     public Integer getId() {
         return id;
     }
@@ -41,27 +43,38 @@ public class Actividad {
         this.nombre = nombre;
     }
 
-    public String getUnidad() {
-        return unidad;
+    public org.example.entities.Categoria getIdCategoria() {
+        return idCategoria;
     }
 
-    public void setUnidad(String unidad) {
-        this.unidad = unidad;
+    public void setIdCategoria(org.example.entities.Categoria idCategoria) {
+        this.idCategoria = idCategoria;
     }
 
-    public Categoria getCategoria() {
-        return categoria;
+    public Set<org.example.entities.Habito> getHabitos() {
+        return habitos;
     }
 
-    public void setCategoria(Categoria categoria) {
-        this.categoria = categoria;
+    public void setHabitos(Set<org.example.entities.Habito> habitos) {
+        this.habitos = habitos;
     }
 
-    public List<Huella> getHuellas() {
+    public Set<org.example.entities.Huella> getHuellas() {
         return huellas;
     }
 
-    public void setHuellas(List<Huella> huellas) {
+    public void setHuellas(Set<org.example.entities.Huella> huellas) {
         this.huellas = huellas;
+    }
+
+    @Override
+    public String toString() {
+        return "Actividad{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", idCategoria=" + idCategoria.getNombre() +
+                ", habitos=" + habitos +
+                ", huellas=" + huellas +
+                '}';
     }
 }

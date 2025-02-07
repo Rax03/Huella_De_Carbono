@@ -1,36 +1,39 @@
 package org.example.entities;
 
-import jakarta.persistence.*;
-import java.time.LocalDate;
-import java.util.List;
+import org.hibernate.annotations.ColumnDefault;
+
+import javax.persistence.*;
+import java.time.Instant;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "usuario", schema = "huelladecarbono")
+@Table(name = "usuario")
 public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_usuario", nullable = false)
     private Integer id;
 
-    @Column(name = "nombre", length = 100)
+    @Column(name = "nombre", nullable = false)
     private String nombre;
 
-    @Column(name = "email", length = 100)
+    @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "contraseña", length = 100)
+    @Column(name = "`contraseña`", nullable = false)
     private String contraseña;
 
+    @ColumnDefault("current_timestamp()")
     @Column(name = "fecha_registro")
-    private LocalDate fechaRegistro;
+    private Instant fechaRegistro;
 
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Habito> habitos;
+    @OneToMany(mappedBy = "idUsuario")
+    private Set<Habito> habitos = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Huella> huellas;
+    @OneToMany(mappedBy = "idUsuario")
+    private Set<Huella> huellas = new LinkedHashSet<>();
 
-    // Getters y Setters
     public Integer getId() {
         return id;
     }
@@ -63,27 +66,39 @@ public class Usuario {
         this.contraseña = contraseña;
     }
 
-    public LocalDate getFechaRegistro() {
+    public Instant getFechaRegistro() {
         return fechaRegistro;
     }
 
-    public void setFechaRegistro(LocalDate fechaRegistro) {
+    public void setFechaRegistro(Instant fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
     }
 
-    public List<Habito> getHabitos() {
+    public Set<Habito> getHabitos() {
         return habitos;
     }
 
-    public void setHabitos(List<Habito> habitos) {
+    public void setHabitos(Set<Habito> habitos) {
         this.habitos = habitos;
     }
 
-    public List<Huella> getHuellas() {
+    public Set<Huella> getHuellas() {
         return huellas;
     }
 
-    public void setHuellas(List<Huella> huellas) {
+    public void setHuellas(Set<Huella> huellas) {
         this.huellas = huellas;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                " id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", contraseña='" + contraseña + '\'' +
+                ", email='" + email + '\'' +
+                ", fechaRegistro=" + fechaRegistro +
+                '}';
     }
 }

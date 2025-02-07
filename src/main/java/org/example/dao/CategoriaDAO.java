@@ -1,12 +1,13 @@
 package org.example.dao;
 
-import jakarta.persistence.EntityManager;
-import org.example.entities.Categoria;
 
-public class CategoriaDAO extends GenericDAO<Categoria> {
-    public CategoriaDAO(EntityManager em) {
-        super(em, Categoria.class);
+import org.example.conection.Connection;
+import org.example.entities.Categoria;
+import org.hibernate.Session;
+
+public class CategoriaDAO {
+    public static Categoria BuscarPorId(int id) {
+        Session session = Connection.getInstance().getSession();
+        return (Categoria) session.get(Categoria.class, id);
     }
 }
-
-
